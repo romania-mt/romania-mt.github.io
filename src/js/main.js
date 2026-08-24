@@ -571,6 +571,19 @@ const residentialAreasLayer = L.geoJSON(residentialAreas, {
     }
 });
 
+const railwayLayer = L.geoJSON(railway, {
+    style: {
+        color: '#4d4d4d',
+        weight: 2,
+        dashArray: '8, 4'
+    },
+    onEachFeature: function (feature, layer) {
+        const p = feature.properties;
+        const name = p.name || p['name:ro'] || 'Railway';
+        layer.bindPopup(`${popupTitle('Railway')}<b>Name:</b> ${name}<br><b>Type:</b> ${p.railway || "-"}<br><b>Usage:</b> ${p.usage || "-"}<br><b>Gauge:</b> ${p.gauge || "-"} mm<br><b>Electrified:</b> ${p.electrified || "-"}<br><b>Operator:</b> ${p.operator || "-"}`);
+    }
+});
+
 // No offline geology/fault vector data was supplied for Romania (unlike the Iceland
 // geology.js/faults.js polygon+line datasets), so this pulls tiles live from the IGR
 // (Institutul Geologic al Romaniei) whole-country 1:1,000,000 geological map WMS -
@@ -639,7 +652,8 @@ var groupedOverlays = [
             { name: "Minor powerline", layer: powerMinorLayer, icon: legendSwatch('line', '#1f78b4') },
             { name: "Power plants", layer: powerplantsLayer, icon: legendSwatch('square', '#fdbf6f') },
             { name: "Wind turbines", layer: windmillLayer, icon: legendSwatch('dot', '#4363d8') },
-            { name: "Residential areas", layer: residentialAreasLayer, icon: legendSwatch('square', '#ccc') }
+            { name: "Residential areas", layer: residentialAreasLayer, icon: legendSwatch('square', '#ccc') },
+            { name: "Railway", layer: railwayLayer, icon: legendSwatch('dashed-line', '#4d4d4d') }
         ]
     },
     {
