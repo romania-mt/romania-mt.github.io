@@ -1,0 +1,23 @@
+{
+    "name": "Romania MT Survey",
+    "short_name": "Romania MT",
+    "description": "MT survey planning map for the Persani / NW-corner regional survey areas, Romania",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#3a5a80",
+    "theme_color": "#3a5a80",
+    "icons": [
+        {
+            "src": "src/assets/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "src/assets/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
