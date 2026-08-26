@@ -5,7 +5,12 @@
 
 // var runningSites = ["B03", "P12"];
 
+// var repeatedSites = ["A01", "P12"];
+
 var runningSites = [
+];
+
+var repeatedSites = [
 ];
 
 var completedSites = [

@@ -273,7 +273,7 @@ function createXSiteLayer(data, options) {
 // Those same sites are excluded from the underlying layers below so a site only ever
 // shows once, as its status marker rather than its original planned marker.
 var siteSourceCollections = [plannedRegionalNW, plannedPersani];
-var statusSiteNames = (completedSites || []).concat(runningSites || []);
+var statusSiteNames = (completedSites || []).concat(runningSites || []).concat(repeatedSites || []);
 
 function findSiteFeatureByName(name, collections) {
     const target = String(name).trim();
@@ -335,6 +335,12 @@ function createStatusSiteLayer(names, collections, options) {
             fillOpacity: 0.9
         });
 
+        if (settings.showLabels) {
+            const labelText = featureName + (settings.labelSuffix || '');
+            const labelClassName = 'mt-label' + (settings.labelClassName ? ' ' + settings.labelClassName : '');
+            visibleMarker.bindTooltip(labelText, { permanent: true, direction: 'top', className: labelClassName });
+        }
+
         let popupContent = `<b>${settings.label}:</b> ${featureName}<br>`;
         popupContent += `<hr style="margin: 4px 0; border-top: 3px solid #aaa;">`;
         popupContent += `<a href="#" class="navigate-link" data-lat="${latlng.lat}" data-lng="${latlng.lng}">📍 Navigate here</a>`;
@@ -350,6 +356,7 @@ function createStatusSiteLayer(names, collections, options) {
 
 var completedSitesLayer = createStatusSiteLayer(completedSites, siteSourceCollections, { color: '#888888', radius: 8, label: 'Completed Site' });
 var runningSitesLayer = createStatusSiteLayer(runningSites, siteSourceCollections, { color: '#ffe119', radius: 8, label: 'Running Site' });
+var repeatedSitesLayer = createStatusSiteLayer(repeatedSites, siteSourceCollections, { color: '#f032e6', radius: 8, label: 'Repeated Site', showLabels: true, labelSuffix: 'R', labelClassName: 'mt-label-repeated' });
 
 function countMatchedSites(names, collections) {
     return (names || []).reduce(function (count, name) {
@@ -370,7 +377,8 @@ function countMatchedSites(names, collections) {
     const totalCount = uniqueSiteNumbers.size;
     const completedCount = countMatchedSites(completedSites, siteSourceCollections);
     const runningCount = countMatchedSites(runningSites, siteSourceCollections);
-    const remainingCount = Math.max(totalCount - completedCount - runningCount, 0);
+    const repeatedCount = countMatchedSites(repeatedSites, siteSourceCollections);
+    const remainingCount = Math.max(totalCount - completedCount - runningCount - repeatedCount, 0);
 
     const statValues = {
         statTotal: totalCount,
@@ -384,10 +392,10 @@ function countMatchedSites(names, collections) {
         if (el) el.textContent = statValues[id];
     });
 
-    // Just for fun: a one-time, dismissable "halfway there" toast once completed sites
-    // cross 50%. Doesn't block anything - it's a notification like any other, and won't
-    // reappear on reload within the same tab.
-    if (totalCount > 0 && completedCount / totalCount >= 0.5) {
+    // Just for fun: a one-time, dismissable "halfway there" toast while completed sites
+    // are between 50% and 90%. Doesn't block anything - it's a notification like any
+    // other, and won't reappear on reload within the same tab.
+    if (totalCount > 0 && completedCount / totalCount >= 0.5 && completedCount / totalCount < 0.9) {
         let alreadyCelebrated = false;
         try {
             alreadyCelebrated = sessionStorage.getItem('mt-halfway-celebrated') === '1';
@@ -402,6 +410,25 @@ function countMatchedSites(names, collections) {
                 { timeout: 8000 }
             );
             try { sessionStorage.setItem('mt-halfway-celebrated', '1'); } catch (e) { /* ignore */ }
+        }
+    }
+
+    // Same idea at 90% - almost done, heading home soon.
+    if (totalCount > 0 && completedCount / totalCount >= 0.9) {
+        let alreadyCelebrated = false;
+        try {
+            alreadyCelebrated = sessionStorage.getItem('mt-almost-done-celebrated') === '1';
+        } catch (e) { /* sessionStorage unavailable - just show it */ }
+
+        if (!alreadyCelebrated) {
+            notification.success(
+                'Almost done!',
+                `<div class="celebration-row">
+                    <span class="celebration-emoji">🏡</span><span class="celebration-emoji">✈️</span><span class="celebration-emoji">🎉</span><span class="celebration-emoji">✈️</span><span class="celebration-emoji">🏡</span>
+                </div><div>${completedCount} of ${totalCount} sites completed - going home soon!</div>`,
+                { timeout: 8000 }
+            );
+            try { sessionStorage.setItem('mt-almost-done-celebrated', '1'); } catch (e) { /* ignore */ }
         }
     }
 })();
@@ -662,7 +689,8 @@ var groupedOverlays = [
             { name: "Installed 2022", layer: installedSites2022Layer, icon: legendSwatch('x', '#33a02c') },
             { name: "Installed bad 2022", layer: installedBadSites2022Layer, icon: legendSwatch('x', '#e31a1c') },
             { name: "Running Sites", layer: runningSitesLayer, icon: legendSwatch('dot', '#ffe119') },
-            { name: "Completed Sites", layer: completedSitesLayer, icon: legendSwatch('dot', '#888888') }
+            { name: "Completed Sites", layer: completedSitesLayer, icon: legendSwatch('dot', '#888888') },
+            { name: "Repeated Sites", layer: repeatedSitesLayer, icon: legendSwatch('dot', '#f032e6') }
         ]
     },
     {
@@ -693,6 +721,7 @@ plannedRegionalNWLayer.addTo(map);
 plannedPersaniLayer.addTo(map);
 completedSitesLayer.addTo(map);
 runningSitesLayer.addTo(map);
+repeatedSitesLayer.addTo(map);
 windmillLayer.addTo(map);
 
 L.control.panelLayers(baseLayers, groupedOverlays, {
