@@ -8,20 +8,24 @@
 // var repeatedSites = ["A01", "P12"];
 
 var runningSites = ["P06", "P07",
-                    "P18",
-                    "P27", "P28",
+                    "P16", "P17",
+                    "P26",
                     "P37", "P38",
-                    "P47", "P49",
-                    "P58",
-                    "P69"
+                    "P47", 
+                    "P55", 
+                    "P65", 
+                    "P75"
 ];
 
 var repeatedSites = [
 ];
 
 var completedSites = ["P09", "P09", 
-                      "P19",
-                      "P29",
-                      "P39"
+                      "P18", "P19",
+                      "P27", "P28", "P29",
+                      "P39",
+                      "P49",
+                      "P58",
+                      "P69",
 
 ];
