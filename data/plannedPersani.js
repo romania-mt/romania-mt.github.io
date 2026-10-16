@@ -80,6 +80,6 @@ var plannedPersani = {
         { "type": "Feature", "properties": { "Name": "P91" }, "geometry": { "type": "Point", "coordinates": [25.168565447611197, 45.878065452229414, 0.0] } },
         { "type": "Feature", "properties": { "Name": "P92" }, "geometry": { "type": "Point", "coordinates": [25.202199313786249, 45.883049288476982, 0.0] } },
         { "type": "Feature", "properties": { "Name": "P94" }, "geometry": { "type": "Point", "coordinates": [25.29008617155047, 45.883275893979182, 0.0] } },
-        { "type": "Feature", "properties": { "Name": "P95" }, "geometry": { "type": "Point", "coordinates": [25.3234650, 48.8868550, 0.0] } }
+        { "type": "Feature", "properties": { "Name": "P95" }, "geometry": { "type": "Point", "coordinates": [25.3234650, 45.8868550, 0.0] } }
     ]
 }
