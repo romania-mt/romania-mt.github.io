@@ -7,7 +7,7 @@
 
 // var repeatedSites = ["A01", "P12"];
 
-var runningSites = ["A01", "A02", 
+var runningSites = ["A01", "A02", "A03",
                     "P15",
                     "P21", "P23", "P24",
                     
