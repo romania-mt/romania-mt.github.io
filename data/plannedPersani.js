@@ -61,7 +61,7 @@ var plannedPersani = {
         { "type": "Feature", "properties": { "Name": "P54" }, "geometry": { "type": "Point", "coordinates": [25.28056546352699, 45.973005670475558, 0.0] } },
         { "type": "Feature", "properties": { "Name": "P55" }, "geometry": { "type": "Point", "coordinates": [25.323987773647229, 45.974791760175847, 0.0] } },
         { "type": "Feature", "properties": { "Name": "P56" }, "geometry": { "type": "Point", "coordinates": [25.367028902780451, 45.976457352444037, 0.0] } },
-        { "type": "Feature", "properties": { "Name": "P59" }, "geometry": { "type": "Point", "coordinates": [25.408, 45.979, 0.0] } },
+//        { "type": "Feature", "properties": { "Name": "P59" }, "geometry": { "type": "Point", "coordinates": [25.408, 45.979, 0.0] } },
         { "type": "Feature", "properties": { "Name": "P57" }, "geometry": { "type": "Point", "coordinates": [25.447351877528671, 45.979940844167629, 0.0] } },
         { "type": "Feature", "properties": { "Name": "P62" }, "geometry": { "type": "Point", "coordinates": [25.197495286580978, 45.951521671817346, 0.0] } },
         { "type": "Feature", "properties": { "Name": "P63" }, "geometry": { "type": "Point", "coordinates": [25.23554289215059, 45.948597907539813, 0.0] } },
